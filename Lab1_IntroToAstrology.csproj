@@ -57,9 +57,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Tools\BaseViewModel.cs" />
+    <Compile Include="Tools\Converters\DateTimeToDateConverter.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
+    <Compile Include="Tools\Services\WaterMarkAdorner.cs" />
+    <Compile Include="Tools\Services\WaterMarkService.cs" />
     <Compile Include="ViewModels\Astrology\AstrologyViewModel.cs" />
     <Compile Include="Views\Astrology\AstrologyControl.xaml.cs">
       <DependentUpon>AstrologyControl.xaml</DependentUpon>
@@ -125,9 +129,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore" />
