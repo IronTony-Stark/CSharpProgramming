@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Exceptions;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
@@ -27,7 +28,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
         public string Name
         {
             get => _name;
-            set
+            private set
             {
                 _name = value;
                 OnPropertyChanged();
@@ -37,7 +38,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
         public string Surname
         {
             get => _surname;
-            set
+            private set
             {
                 _surname = value;
                 OnPropertyChanged();
@@ -47,7 +48,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
         public string Email
         {
             get => _email;
-            set
+            private set
             {
                 _email = value;
                 OnPropertyChanged();
@@ -57,7 +58,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
         public DateTime BirthDate
         {
             get => _birthDate;
-            set
+            private set
             {
                 _birthDate = value;
                 OnPropertyChanged();
@@ -74,12 +75,18 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
 
         internal User(string name, string surname, string email = "default@mail.com", DateTime? birthDate = null)
         {
+            if (!AstrologyViewModel.EmailIsValid(email))
+                throw new InvalidEmailException("Invalid Email Address");
+
             Name = name;
             Surname = surname;
             Email = email;
             BirthDate = birthDate ?? DateTime.Today;
 
             _age = AstrologyViewModel.CalculateAge(BirthDate);
+            if (Age < 0) throw new UserNotBornException($"User hasn't been born yet. Age: {Age}");
+            if (Age > 135) throw new UserTooOldException($"User is too old. Age: {Age}");
+            
             _isAdult = Age > 17;
             _isBirthday = BirthDate.Month == DateTime.Today.Month && BirthDate.Day == DateTime.Today.Day;
             _sunSign = AstrologyViewModel.WesternZodiac(BirthDate.Day, BirthDate.Month);

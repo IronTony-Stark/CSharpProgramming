@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Windows;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models;
@@ -66,14 +67,14 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
         public User User
         {
             get => _user;
-            set
+            private set
             {
                 _user = value;
                 OnPropertyChanged();
             }
         }
 
-        public User UserDefault => _userDefault;
+        private User UserDefault => _userDefault;
 
         public string NameTemp
         {
@@ -115,7 +116,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
             }
         }
 
-        public string[] Congratz => _congratz;
+        private string[] Congratz => _congratz;
 
         #region Commands
 
@@ -145,16 +146,21 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
         {
             LoaderManager.Instance.ShowLoader();
 
-            await Task.Run(() => { User = new User(NameTemp, SurnameTemp, EmailTemp, BirthDateTemp); });
-
-            LoaderManager.Instance.HideLoader();
-
-            if (User.Age > 135 || User.Age < 0)
+            try
+            {
+                await Task.Run(() => { User = new User(NameTemp, SurnameTemp, EmailTemp, BirthDateTemp); });
+            }
+            catch (Exception e)
             {
                 User = UserDefault;
-                MessageBox.Show("Invalid Birth Date");
+                LoaderManager.Instance.HideLoader();
+                
+                MessageBox.Show(e.Message);
+                
                 return;
             }
+
+            LoaderManager.Instance.HideLoader();
 
             if (User.IsBirthday)
             {
@@ -232,6 +238,11 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
             };
 
             return signs[(year - 4) % 12];
+        }
+        
+        internal static bool EmailIsValid(string email)
+        {
+            return new EmailAddressAttribute().IsValid(email);
         }
 
         private bool ProceedCanExecuteCommand()
