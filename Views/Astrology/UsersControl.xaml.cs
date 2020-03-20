@@ -4,12 +4,12 @@ using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Views.Astrology
 {
-    public partial class AstrologyControl : UserControl, INavigatable
+    public partial class AstrologyPeopleControl : UserControl, INavigatable
     {
-        public AstrologyControl()
+        public AstrologyPeopleControl()
         {
             InitializeComponent();
-            DataContext = new AstrologyViewModel();
+            DataContext = new AstrologyPeopleViewModel();
         }
     }
 }

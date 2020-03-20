@@ -4,12 +4,18 @@ using System.Runtime.CompilerServices;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Exceptions;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology;
 
+// Реалізуйте кнопки і можливість додавати, редагувати та видаляти користувачів
+// Сортування та фільтрація (Linq) 
+// Серіалізація
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
 {
-    internal class User : INotifyPropertyChanged
+    public class User : INotifyPropertyChanged
     {
         #region Fields
 
+        private static ulong _idGlobal;
+        
+        private readonly ulong _id;
         private string _name;
         private string _surname;
         private string _email;
@@ -24,6 +30,8 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
         #endregion
 
         #region Properties
+
+        public ulong Id => _id;
 
         public string Name
         {
@@ -78,6 +86,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
             if (!AstrologyViewModel.EmailIsValid(email))
                 throw new InvalidEmailException("Invalid Email Address");
 
+            _id = _idGlobal++;
             Name = name;
             Surname = surname;
             Email = email;

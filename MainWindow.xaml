@@ -6,9 +6,9 @@
         xmlns:wpf="clr-namespace:FontAwesome.WPF;assembly=FontAwesome.WPF"
         xmlns:astrology="clr-namespace:KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Views.Astrology"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="500">
+        Title="MainWindow" Height="600" Width="1000">
     <Grid IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-        <astrology:AstrologyControl></astrology:AstrologyControl>
+        <ContentControl Name="ContentCtrl" IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
         <wpf:ImageAwesome Icon="Refresh" Width="50" Height="50" Spin="True" Visibility="{Binding LoaderVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></wpf:ImageAwesome>
     </Grid>
 </Window>

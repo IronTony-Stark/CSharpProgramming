@@ -5,6 +5,7 @@ using System.Windows;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Managers;
+using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 {
@@ -167,6 +168,8 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
                 string congratulation = Congratz[new Random().Next(Congratz.Length)];
                 MessageBox.Show(string.Format(congratulation, User.Name));
             }
+            
+            NavigationManager.Instance.Navigate(ViewType.DataGrid);
         }
 
         internal static int CalculateAge(DateTime birthDate)
