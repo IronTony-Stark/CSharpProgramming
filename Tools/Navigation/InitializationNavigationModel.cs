@@ -5,21 +5,15 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 {
     internal class InitializationNavigationModel : BaseNavigationModel
     {
-        public InitializationNavigationModel(IContentOwner contentOwner) : base(contentOwner) { }
-   
-        protected override void InitializeView(ViewType viewType)
+        public InitializationNavigationModel(IContentOwner contentOwner) : base(contentOwner)
         {
-            switch (viewType)
-            {
-                case ViewType.DataGrid:
-                    ViewsDictionary.Add(viewType,new AstrologyPeopleControl());
-                    break;
-                case ViewType.PersonOperation:
-                    ViewsDictionary.Add(viewType, new AstrologyControl());
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(viewType), viewType, null);
-            }
+        }
+
+        protected override void InitializeViews()
+        {
+            UsersControl usersControl = new UsersControl();
+            ViewsDictionary.Add(ViewType.DataGrid, usersControl);
+            ViewsDictionary.Add(ViewType.PersonOperation, new AstrologyControl(usersControl.DataContext));
         }
     }
 }

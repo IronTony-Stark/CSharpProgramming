@@ -9,7 +9,7 @@ using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology;
 // Серіалізація
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
 {
-    public class User : INotifyPropertyChanged
+    public class User : INotifyPropertyChanged, IComparable<User>
     {
         #region Fields
 
@@ -108,6 +108,13 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
         private protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public int CompareTo(User other)
+        {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+            return _id.CompareTo(other._id);
         }
     }
 }

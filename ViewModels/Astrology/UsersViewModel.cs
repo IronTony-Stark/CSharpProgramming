@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Managers;
@@ -8,15 +9,18 @@ using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 {
-    internal class AstrologyPeopleViewModel : BaseViewModel
+    internal class UsersViewModel : BaseViewModel
     {
         #region Fields
 
         private ObservableCollection<User> _users = new ObservableCollection<User>();
-        
+        private User _selectedUser;
+
         #region Commands
-        
+
         private RelayCommand<object> _addUserCommand;
+        private RelayCommand<object> _updateUserCommand;
+        private RelayCommand<object> _deleteUserCommand;
 
         #endregion
 
@@ -29,24 +33,47 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
             get => _users;
             set => _users = value;
         }
-        
+
+        public User SelectedUser
+        {
+            get => _selectedUser;
+            set => _selectedUser = value;
+        }
+
         #region Commands
-        
-        public RelayCommand<object> AddUserCommand => _addUserCommand ?? (
-            _addUserCommand = new RelayCommand<object>(AddUserImpl));
-        
-        #endregion
+
+        public RelayCommand<object> AddUserCommand =>
+            _addUserCommand ?? (_addUserCommand = new RelayCommand<object>(AddUserImpl));
+
+        public RelayCommand<object> UpdateUserCommand =>
+            _updateUserCommand ?? (_updateUserCommand = new RelayCommand<object>(UpdateUserImpl));
+
+        public RelayCommand<object> DeleteUserCommand =>
+            _deleteUserCommand ?? (_deleteUserCommand = new RelayCommand<object>(DeleteUserImpl));
 
         #endregion
 
-        internal AstrologyPeopleViewModel()
+        #endregion
+
+        internal UsersViewModel()
         {
             GenerateUsers(50);
         }
-        
+
         private void AddUserImpl(object obj)
         {
             NavigationManager.Instance.Navigate(ViewType.PersonOperation);
+        }
+
+        private void UpdateUserImpl(object obj)
+        {
+            AstrologyViewModel.UserToUpdate = SelectedUser;
+            NavigationManager.Instance.Navigate(ViewType.PersonOperation);
+        }
+
+        private void DeleteUserImpl(object obj)
+        {
+            Users.Remove(SelectedUser);
         }
 
         private async void GenerateUsers(int num)

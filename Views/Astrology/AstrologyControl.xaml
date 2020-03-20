@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="1000" 
              d:DataContext="{d:DesignInstance astrology:AstrologyViewModel}">
-    <Grid>
+    <Grid VerticalAlignment="Center">
         <Grid.Resources>
             <converters:DateTimeToDateConverter x:Key="DateConverter" />
             
@@ -37,6 +37,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         
@@ -81,7 +83,7 @@
         <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
                 HorizontalAlignment="Center" 
                 Margin="0 10 0 10" Padding="35 5 35 5"
-                Content="Proceed" Command="{Binding ProceedCommand}"/>
+                Content="Commit" Command="{Binding CommitCommand}"/>
         
         <!-- Display Info -->
         <TextBlock Grid.Row="4" Grid.Column="0" 
@@ -120,5 +122,11 @@
         <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
                    Text="{Binding User.Age, StringFormat=Age: &#x0a;  {0}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                    Style="{StaticResource TextOutput}" LineHeight="20"></TextBlock>
+        
+        <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
+                HorizontalAlignment="Center" 
+                Margin="0 50 0 10" Padding="35 5 35 5"
+                Content="Finish" Command="{Binding FinishCommand}"/>
+        
     </Grid>
 </UserControl>

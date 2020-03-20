@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,7 +14,10 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
     {
         #region Fields
 
-        private User _user = new User("Anonym", "Anonym");
+        private UsersViewModel _usersViewModel;
+        private static User _userToUpdate;
+
+        private User _user;
         private readonly User _userDefault;
 
         private string _nameTemp;
@@ -27,28 +31,28 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
         {
             "Happy birthday, {0}! May your Facebook, " +
             "Instagram and Twitter walls be filled with messages from people you never talk to!",
-            
+
             "Forget about the past, you can’t change it. Forget about the future, you can’t " +
             "predict it. Forget about the present, I didn't get you one. Happy birthday, {0}!",
-            
+
             "On your birthday, I thought of giving you the cutest gift in the world. " +
             "But then I realized that is not possible, " +
             "because you yourself are the cutest gift in the world. Anyway, happy birthday, {0}!",
-            
+
             "Happy birthday, {0}! The emergency department is on speed dial just in case you have " +
             "an unexpected asthma attack blowing the candles. Just saying... I mean just kidding",
-            
+
             "Happy birthday, {0}! I made a list about the words of wisdom I wanted to give you " +
             "for your birthday. It’s still blank. Maybe next year",
-            
+
             "Oh yeah! You’re getting closer to the age when the government sends you money " +
             "every month. Happy Birthday, {0}!",
-            
+
             "Congratulations, {0}! You only look one year older than you did on your last birthday.",
-            
+
             "Brace yourself, {0}! An explosion of Facebook, Twitter and Instagram notifications " +
             "is coming. Happy Birthday!",
-            
+
             "Happy Birthday, {0}! May your day be full of happiness, laughter, love, and of " +
             "course the most important thing—wine!!",
         };
@@ -57,13 +61,22 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 
         #region Commands
 
-        private RelayCommand<object> _proceedCommand;
+        private RelayCommand<object> _commitCommand;
+        private RelayCommand<object> _finishCommand;
 
         #endregion
 
         #endregion
 
         #region Properties
+
+        internal ObservableCollection<User> Users => _usersViewModel.Users;
+
+        internal static User UserToUpdate
+        {
+            get => _userToUpdate;
+            set => _userToUpdate = value;
+        }
 
         public User User
         {
@@ -121,14 +134,11 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 
         #region Commands
 
-        public RelayCommand<object> ProceedCommand
-        {
-            get
-            {
-                return _proceedCommand ?? (_proceedCommand = new RelayCommand<object>(
-                    ProceedImpl, o => ProceedCanExecuteCommand()));
-            }
-        }
+        public RelayCommand<object> CommitCommand => _commitCommand ?? (_commitCommand = 
+            new RelayCommand<object>(CommitImpl, o => CommitCanExecuteCommand()));
+
+        public RelayCommand<object> FinishCommand =>
+            _finishCommand ?? (_finishCommand = new RelayCommand<object>(FinishImpl));
 
         #endregion
 
@@ -136,14 +146,18 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 
         #region Constructors
 
-        internal AstrologyViewModel()
+        internal AstrologyViewModel(UsersViewModel usersViewModel)
         {
+            _usersViewModel = usersViewModel;
+            _user = new User("Anonym", "Anonym");
             _userDefault = _user;
         }
 
         #endregion
 
-        private async void ProceedImpl(object obj)
+        #region CommandsImpls
+
+        private async void CommitImpl(object obj)
         {
             LoaderManager.Instance.ShowLoader();
 
@@ -155,11 +169,20 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
             {
                 User = UserDefault;
                 LoaderManager.Instance.HideLoader();
-                
+
                 MessageBox.Show(e.Message);
-                
+
                 return;
             }
+
+            if (UserToUpdate != null)
+            {
+                Users.Remove(UserToUpdate);
+            }
+
+            Users.Add(User);
+
+            UserToUpdate = User;
 
             LoaderManager.Instance.HideLoader();
 
@@ -168,9 +191,15 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
                 string congratulation = Congratz[new Random().Next(Congratz.Length)];
                 MessageBox.Show(string.Format(congratulation, User.Name));
             }
-            
+        }
+
+        private void FinishImpl(object obj)
+        {
+            UserToUpdate = null;
             NavigationManager.Instance.Navigate(ViewType.DataGrid);
         }
+
+        #endregion
 
         internal static int CalculateAge(DateTime birthDate)
         {
@@ -242,13 +271,13 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 
             return signs[(year - 4) % 12];
         }
-        
+
         internal static bool EmailIsValid(string email)
         {
             return new EmailAddressAttribute().IsValid(email);
         }
 
-        private bool ProceedCanExecuteCommand()
+        private bool CommitCanExecuteCommand()
         {
             return !string.IsNullOrEmpty(_nameTemp) && !string.IsNullOrEmpty(_surnameTemp)
                                                     && !string.IsNullOrEmpty(_emailTemp)
