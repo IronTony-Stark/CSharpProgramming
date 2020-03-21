@@ -7,10 +7,10 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Views.Astrology
 {
     public partial class AstrologyControl : UserControl, INavigatable
     {
-        public AstrologyControl(object usersControlDataContext)
+        public AstrologyControl()
         {
             InitializeComponent();
-            DataContext = new AstrologyViewModel((UsersViewModel) usersControlDataContext);
+            DataContext = new AstrologyViewModel();
         }
     }
 }

@@ -4,11 +4,9 @@ using System.Runtime.CompilerServices;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Exceptions;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology;
 
-// Реалізуйте кнопки і можливість додавати, редагувати та видаляти користувачів
-// Сортування та фільтрація (Linq) 
-// Серіалізація
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
 {
+    [Serializable]
     public class User : INotifyPropertyChanged, IComparable<User>
     {
         #region Fields
@@ -30,6 +28,12 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
         #endregion
 
         #region Properties
+
+        public static ulong IdGlobal
+        {
+            get => _idGlobal;
+            set => _idGlobal = value;
+        }
 
         public ulong Id => _id;
 
@@ -102,7 +106,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
             _chineseSign = AstrologyViewModel.ChineseZodiac(BirthDate.Year);
         }
 
-
+        [field:NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         private protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

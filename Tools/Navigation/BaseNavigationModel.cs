@@ -8,7 +8,6 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 
         private readonly IContentOwner _contentOwner;
         private readonly Dictionary<ViewType, INavigatable> _viewsDictionary;
-        private bool isInitialized = false;
 
         #endregion
 
@@ -18,11 +17,9 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 
         protected Dictionary<ViewType, INavigatable> ViewsDictionary => _viewsDictionary;
 
-        public bool IsInitialized { get; set; }
-
         #endregion
-        
-        protected abstract void InitializeViews();
+
+        protected abstract void InitializeView(ViewType viewType);
         
         protected BaseNavigationModel(IContentOwner contentOwner)
         {
@@ -32,13 +29,10 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 
         public void Navigate(ViewType viewType)
         {
-            if (!isInitialized)
-            {
-                InitializeViews();
-                isInitialized = true;
-            }
+            if (!ViewsDictionary.ContainsKey(viewType))
+                InitializeView(viewType);
 
-            ContentOwner.ContentControl.Content = ViewsDictionary[viewType];
+            ContentOwner.Content = ViewsDictionary[viewType];
         }
     }
 }

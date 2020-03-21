@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,9 +12,6 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
     internal class AstrologyViewModel : BaseViewModel
     {
         #region Fields
-
-        private UsersViewModel _usersViewModel;
-        private static User _userToUpdate;
 
         private User _user;
         private readonly User _userDefault;
@@ -69,14 +65,6 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
         #endregion
 
         #region Properties
-
-        internal ObservableCollection<User> Users => _usersViewModel.Users;
-
-        internal static User UserToUpdate
-        {
-            get => _userToUpdate;
-            set => _userToUpdate = value;
-        }
 
         public User User
         {
@@ -146,9 +134,8 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 
         #region Constructors
 
-        internal AstrologyViewModel(UsersViewModel usersViewModel)
+        internal AstrologyViewModel()
         {
-            _usersViewModel = usersViewModel;
             _user = new User("Anonym", "Anonym");
             _userDefault = _user;
         }
@@ -175,27 +162,25 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
                 return;
             }
 
-            if (UserToUpdate != null)
+            if (StationManager.SelectedUser != null)
             {
-                Users.Remove(UserToUpdate);
+                StationManager.DataStorage.RemoveUser(StationManager.SelectedUser);
             }
+            StationManager.DataStorage.AddUser(User);
+            StationManager.DataStorage.Save();
 
-            Users.Add(User);
-
-            UserToUpdate = User;
+            StationManager.SelectedUser = User;
 
             LoaderManager.Instance.HideLoader();
 
-            if (User.IsBirthday)
-            {
-                string congratulation = Congratz[new Random().Next(Congratz.Length)];
-                MessageBox.Show(string.Format(congratulation, User.Name));
-            }
+            if (!User.IsBirthday) return;
+            string congratulation = Congratz[new Random().Next(Congratz.Length)];
+            MessageBox.Show(string.Format(congratulation, User.Name));
         }
 
-        private void FinishImpl(object obj)
+        private static void FinishImpl(object obj)
         {
-            UserToUpdate = null;
+            StationManager.SelectedUser = null;
             NavigationManager.Instance.Navigate(ViewType.DataGrid);
         }
 
