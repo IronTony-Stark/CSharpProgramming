@@ -37,7 +37,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools
             return (lhs, rhs) => lhs.Equals(rhs);
         }
 
-        public static Func<T, T, bool> GetFunctionByName<T>(string name)
+        internal static Func<T, T, bool> GetFunctionByName<T>(string name)
             where T : IComparable<T>
         {
             try

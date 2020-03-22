@@ -1,5 +1,4 @@
-﻿using System;
-using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Views.Astrology;
+﻿using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Views.Astrology;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 {
@@ -7,19 +6,11 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
     {
         public InitializationNavigationModel(IContentOwner contentOwner) : base(contentOwner) { }
 
-        protected override void InitializeView(ViewType viewType)
+        protected override void InitializeView()
         {
-            switch (viewType)
-            {
-                case ViewType.DataGrid:
-                    ViewsDictionary.Add(viewType, new UsersControl());
-                    break;
-                case ViewType.PersonOperation:
-                    ViewsDictionary.Add(viewType, new AstrologyControl());
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(viewType), viewType, null);
-            }
+            UsersControl usersControl;
+            ViewsDictionary.Add(ViewType.DataGrid, usersControl = new UsersControl());
+            ViewsDictionary.Add(ViewType.PersonOperation, new AstrologyControl(usersControl));
         }
     }
 }

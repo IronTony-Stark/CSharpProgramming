@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools;
+using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.DataStorage;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Managers;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation;
 
@@ -12,7 +13,9 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
     internal class AstrologyViewModel : BaseViewModel
     {
         #region Fields
-        
+
+        private IRepository _repository;
+
         private User _user;
         private readonly User _userDefault;
 
@@ -65,6 +68,8 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
         #endregion
 
         #region Properties
+
+        private IRepository Repository => _repository;
 
         public User User
         {
@@ -122,8 +127,9 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 
         #region Commands
 
-        public RelayCommand<object> CommitCommand => _commitCommand ?? (_commitCommand = 
-            new RelayCommand<object>(CommitImpl, o => CommitCanExecuteCommand()));
+        public RelayCommand<object> CommitCommand => _commitCommand ?? (_commitCommand =
+            new RelayCommand<object>(CommitImpl,
+                o => CommitCanExecuteCommand()));
 
         public RelayCommand<object> FinishCommand =>
             _finishCommand ?? (_finishCommand = new RelayCommand<object>(FinishImpl));
@@ -134,8 +140,9 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 
         #region Constructors
 
-        internal AstrologyViewModel()
+        internal AstrologyViewModel(IRepository repository)
         {
+            _repository = repository;
             _user = new User("Anonym", "Anonym");
             _userDefault = _user;
         }
@@ -163,11 +170,9 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
             }
 
             if (StationManager.SelectedUser != null)
-            {
-                StationManager.DataStorage.RemoveUser(StationManager.SelectedUser);
-            }
-            StationManager.DataStorage.AddUser(User);
-            StationManager.DataStorage.Save();
+                Repository.UpdateUser(StationManager.SelectedUser, User);
+            else
+                Repository.AddUser(User);
 
             StationManager.SelectedUser = User;
 

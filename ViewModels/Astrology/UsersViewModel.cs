@@ -5,12 +5,13 @@ using System.Linq;
 using System.Windows;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools;
+using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.DataStorage;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Managers;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 {
-    internal class UsersViewModel : BaseViewModel
+    internal class UsersViewModel : BaseViewModel, IRepository
     {
         #region Fields
         
@@ -117,12 +118,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
 
         private void DeleteUserImpl(object obj)
         {
-            User toDelete = StationManager.SelectedUser;
-            
-            Users.Remove(toDelete);
-            StationManager.DataStorage.RemoveUser(toDelete);
-            StationManager.DataStorage.Save();
-            
+            DeleteUser(StationManager.SelectedUser);
             StationManager.SelectedUser = null;
         }
 
@@ -227,6 +223,26 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
                 default:
                     throw new ArgumentException("Sort By Unknown Property");
             }
+        }
+
+        public void AddUser(User u)
+        {
+            Users.Add(u);
+            StationManager.DataStorage.AddUser(u);
+            StationManager.DataStorage.Save();
+        }
+
+        public void UpdateUser(User who, User to)
+        {
+            DeleteUser(who);
+            AddUser(to);
+        }
+
+        public void DeleteUser(User u)
+        {
+            Users.Remove(u);
+            StationManager.DataStorage.RemoveUser(u);
+            StationManager.DataStorage.Save();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools
 {
-    public class Utilities
+    internal static class Utilities
     {
         internal static readonly Random Random = new Random();
         

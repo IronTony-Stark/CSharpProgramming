@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Views.Astrology;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 {
@@ -9,6 +8,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 
         private readonly IContentOwner _contentOwner;
         private readonly Dictionary<ViewType, INavigatable> _viewsDictionary;
+        private bool _isInitialized;
 
         #endregion
 
@@ -20,7 +20,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 
         #endregion
 
-        protected abstract void InitializeView(ViewType viewType);
+        protected abstract void InitializeView();
         
         protected BaseNavigationModel(IContentOwner contentOwner)
         {
@@ -30,15 +30,13 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 
         public void Navigate(ViewType viewType)
         {
-            if (viewType == ViewType.DataGrid)
-                ContentOwner.Content = new UsersControl();
-            else
+            if (!_isInitialized)
             {
-                if (!ViewsDictionary.ContainsKey(viewType))
-                    InitializeView(viewType);
-
-                ContentOwner.Content = ViewsDictionary[viewType];   
+                InitializeView();
+                _isInitialized = true;
             }
+
+            ContentOwner.Content = ViewsDictionary[viewType];
         }
     }
 }

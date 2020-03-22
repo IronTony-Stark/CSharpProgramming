@@ -107,7 +107,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
             _chineseSign = AstrologyViewModel.ChineseZodiac(BirthDate.Year);
         }
 
-        public object this[string propertyName]
+        internal object this[string propertyName]
         {
             get
             {

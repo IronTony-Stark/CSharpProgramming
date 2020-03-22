@@ -89,35 +89,35 @@
         <TextBlock Grid.Row="4" Grid.Column="0" 
                    Text="{Binding User.Name, StringFormat=Name: {0}, 
                    Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                   Style="{StaticResource TextOutput}"></TextBlock>
+                   Style="{StaticResource TextOutput}"/>
         
         <TextBlock Grid.Row="4" Grid.Column="1" 
                    Text="{Binding User.Surname, StringFormat=Surname: {0}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                   Style="{StaticResource TextOutput}"></TextBlock>
+                   Style="{StaticResource TextOutput}"/>
         
         <TextBlock Grid.Row="5" Grid.Column="0" 
                    Text="{Binding User.Email, StringFormat=Email: {0}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                   Style="{StaticResource TextOutput}"></TextBlock>
+                   Style="{StaticResource TextOutput}"/>
         
         <TextBlock Grid.Row="5" Grid.Column="1" 
                    Text="{Binding User.BirthDate, StringFormat=Birth Date: {0}, Converter={StaticResource DateConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
-                   Style="{StaticResource TextOutput}"></TextBlock>
+                   Style="{StaticResource TextOutput}"/>
         
         <TextBlock Grid.Row="6" Grid.Column="0"
                    Text="{Binding User.SunSign, StringFormat=Sun Sign: {0}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{StaticResource TextOutput}"></TextBlock>
+                   Style="{StaticResource TextOutput}"/>
         
         <TextBlock Grid.Row="6" Grid.Column="1"
                    Text="{Binding User.ChineseSign, StringFormat=Chinese Sign: {0}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{StaticResource TextOutput}"></TextBlock>
+                   Style="{StaticResource TextOutput}"/>
         
         <CheckBox Grid.Row="7" Grid.Column="0"
-                  Style="{StaticResource TextOutput}" Height="20" Content="Is Adult" IsHitTestVisible="False"
-                  IsChecked="{Binding User.IsAdult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding User.IsAdult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{StaticResource TextOutput}" Height="20" Content="Is Adult" IsHitTestVisible="False"/>
         
         <CheckBox Grid.Row="7" Grid.Column="1"
-                  Style="{StaticResource TextOutput}" Height="20" Content="Is Birthday" IsHitTestVisible="False"
-                  IsChecked="{Binding User.IsBirthday, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding User.IsBirthday, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{StaticResource TextOutput}" Height="20" Content="Is Birthday" IsHitTestVisible="False"/>
         
         <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2"
                    Text="{Binding User.Age, StringFormat=Age: &#x0a;  {0}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
