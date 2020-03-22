@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.DataStorage
 {
     internal interface IDataStorage
     {
-        ObservableCollection<User> Users { get; }
+        // ObservableCollection<User> UsersView { get; set; }
         
-        List<User> UsersList { get; }
+        List<User> Users { get; }
         
         void AddUser(User user);
         

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Views.Astrology;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 {
@@ -29,10 +30,15 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation
 
         public void Navigate(ViewType viewType)
         {
-            if (!ViewsDictionary.ContainsKey(viewType))
-                InitializeView(viewType);
+            if (viewType == ViewType.DataGrid)
+                ContentOwner.Content = new UsersControl();
+            else
+            {
+                if (!ViewsDictionary.ContainsKey(viewType))
+                    InitializeView(viewType);
 
-            ContentOwner.Content = ViewsDictionary[viewType];
+                ContentOwner.Content = ViewsDictionary[viewType];   
+            }
         }
     }
 }

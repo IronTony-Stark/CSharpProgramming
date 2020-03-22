@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models;
@@ -11,35 +10,45 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.DataStorage
 {
     internal class SerializedDataStorage : IDataStorage
     {
-        private readonly ObservableCollection<User> _users;
+        // private ObservableCollection<User> _usersView;
+        
+        private readonly List<User> _users;
 
         internal SerializedDataStorage()
         {
             try
             {
-                _users = SerializationManager.Deserialize<ObservableCollection<User>>(FileFolderHelper.StorageFilePath);
+                _users = SerializationManager.Deserialize<List<User>>(FileFolderHelper.StorageFilePath);
                 User.IdGlobal = _users.Last().Id;
             }
             catch (FileNotFoundException)
             {
-                _users = new ObservableCollection<User>();
+                _users = new List<User>();
                 GenerateUsers(50);
                 Save();
             }
-        }
-        
-        public ObservableCollection<User> Users => _users;
 
-        public List<User> UsersList => _users.ToList();
+            // _usersView = new ObservableCollection<User>(_users);
+        }
+
+        // public ObservableCollection<User> UsersView
+        // {
+        //     get => _usersView;
+        //     set => _usersView = value;
+        // }
+
+        public List<User> Users => _users;
 
         public void AddUser(User user)
         {
             _users.Add(user);
+            // _usersView.Add(user);
         }
 
         public void RemoveUser(User user)
         {
             _users.Remove(user);
+            // _usersView.Remove(user);
         }
 
         public void Save()

@@ -12,7 +12,7 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology
     internal class AstrologyViewModel : BaseViewModel
     {
         #region Fields
-
+        
         private User _user;
         private readonly User _userDefault;
 

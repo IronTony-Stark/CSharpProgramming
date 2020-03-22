@@ -1,5 +1,4 @@
-﻿using System.Runtime.Remoting.Contexts;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology;
 

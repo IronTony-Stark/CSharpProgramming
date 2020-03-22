@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models;
+﻿using System.Windows;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.DataStorage;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Managers;

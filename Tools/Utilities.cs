@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Text;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools

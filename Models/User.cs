@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Exceptions;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology;
@@ -11,14 +12,14 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
     {
         #region Fields
 
-        private static ulong _idGlobal;
-        
-        private readonly ulong _id;
+        private static int _idGlobal;
+
+        private readonly int _id;
         private string _name;
         private string _surname;
         private string _email;
         private DateTime _birthDate;
-        
+
         private readonly int _age;
         private readonly bool _isAdult;
         private readonly bool _isBirthday;
@@ -29,13 +30,13 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
 
         #region Properties
 
-        public static ulong IdGlobal
+        public static int IdGlobal
         {
             get => _idGlobal;
             set => _idGlobal = value;
         }
 
-        public ulong Id => _id;
+        public int Id => _id;
 
         public string Name
         {
@@ -99,15 +100,31 @@ namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Models
             _age = AstrologyViewModel.CalculateAge(BirthDate);
             if (Age < 0) throw new UserNotBornException($"User hasn't been born yet. Age: {Age}");
             if (Age > 135) throw new UserTooOldException($"User is too old. Age: {Age}");
-            
+
             _isAdult = Age > 17;
             _isBirthday = BirthDate.Month == DateTime.Today.Month && BirthDate.Day == DateTime.Today.Day;
             _sunSign = AstrologyViewModel.WesternZodiac(BirthDate.Day, BirthDate.Month);
             _chineseSign = AstrologyViewModel.ChineseZodiac(BirthDate.Year);
         }
 
-        [field:NonSerialized]
-        public event PropertyChangedEventHandler PropertyChanged;
+        public object this[string propertyName]
+        {
+            get
+            {
+                try
+                {
+                    Type myType = typeof(User);
+                    PropertyInfo myPropInfo = myType.GetProperty(propertyName);
+                    return myPropInfo.GetValue(this, null);
+                }
+                catch (Exception e)
+                {
+                    throw new PropertyNotFoundException($"Property {propertyName} cannot be found", e);
+                }
+            }
+        }
+
+        [field: NonSerialized] public event PropertyChangedEventHandler PropertyChanged;
 
         private protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

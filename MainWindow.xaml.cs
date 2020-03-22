@@ -1,8 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.DataStorage;
-using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Managers;
-using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Navigation;
 using KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels;
 
 namespace KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology

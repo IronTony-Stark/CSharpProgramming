@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:astrology="clr-namespace:KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.ViewModels.Astrology"
              xmlns:converters="clr-namespace:KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Converters"
+             xmlns:services="clr-namespace:KMA.ProgrammingInCSharp2019.Lab1.IntroToAstrology.Tools.Services"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance astrology:UsersViewModel}">
@@ -13,17 +14,23 @@
             <converters:DateTimeToDateConverter x:Key="DateConverter" />
         </Grid.Resources>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0" 
+        <DataGrid Grid.Row="0" Grid.Column="0" Grid.RowSpan="3"
                   ItemsSource="{Binding Users, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedItem="{Binding SelectedUser, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                   AutoGenerateColumns="False" IsReadOnly="True"
                   SelectionUnit="FullRow" SelectionMode="Single">
-            
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id, Mode=OneWay}" />
                 <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" />
@@ -38,22 +45,114 @@
                 <DataGridTextColumn Header="Sun Sign" Binding="{Binding SunSign, Mode=OneWay}" />
                 <DataGridTextColumn Header="Chinese Sign" Binding="{Binding ChineseSign, Mode=OneWay}" />
             </DataGrid.Columns>
-            
+
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Update" Command="{Binding UpdateUserCommand}"/>
-                    <MenuItem Header="Delete" Command="{Binding DeleteUserCommand}"/>
+                    <MenuItem Header="Update" Command="{Binding UpdateUserCommand}" />
+                    <MenuItem Header="Delete" Command="{Binding DeleteUserCommand}" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
         </DataGrid>
-        
-        <TextBlock Grid.Column="1" 
-                   Text="Right Click On Row To Open Context Menu"/>
 
-        <Button Grid.Column="1"
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   Margin="10 10 10 10"
+                   Text="Right Click On Row To Open Context Menu" />
+
+        <Button Grid.Row="0" Grid.Column="1"
+                Margin="50 0 50 0"
                 Content="Add User"
                 Command="{Binding AddUserCommand}"
+                Width="110" Height="40" />
+
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock
+                Text="Sort By"
+                Margin="0 0 0 10"
+                HorizontalAlignment="Center" />
+
+            <ComboBox
+                SelectedValue="{Binding SortBy, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValuePath="Content"
+                Text="Sort By"
+                Width="110" Height="40"
                 HorizontalAlignment="Center"
-                Width="100" Height="100" />
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center">
+                <ComboBoxItem IsSelected="True">Id</ComboBoxItem>
+                <ComboBoxItem>Name</ComboBoxItem>
+                <ComboBoxItem>Surname</ComboBoxItem>
+                <ComboBoxItem>Email</ComboBoxItem>
+                <ComboBoxItem>Birth Date</ComboBoxItem>
+                <ComboBoxItem>Age</ComboBoxItem>
+                <ComboBoxItem>Adult</ComboBoxItem>
+                <ComboBoxItem>Birthday Today</ComboBoxItem>
+                <ComboBoxItem>Sun Sign</ComboBoxItem>
+                <ComboBoxItem>Chinese Sign</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <TextBlock
+                Text="Filter By"
+                Margin="0 0 0 10"
+                HorizontalAlignment="Center" />
+
+            <ComboBox
+                SelectedValue="{Binding FilterBy, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValuePath="Content"
+                Text="Filter"
+                Width="110" Height="40"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center">
+                <ComboBoxItem IsSelected="True">Id</ComboBoxItem>
+                <ComboBoxItem>Name</ComboBoxItem>
+                <ComboBoxItem>Surname</ComboBoxItem>
+                <ComboBoxItem>Email</ComboBoxItem>
+                <ComboBoxItem>BirthDate</ComboBoxItem>
+                <ComboBoxItem>Age</ComboBoxItem>
+                <ComboBoxItem>Adult</ComboBoxItem>
+                <ComboBoxItem>IsBirthday</ComboBoxItem>
+                <ComboBoxItem>SunSign</ComboBoxItem>
+                <ComboBoxItem>ChineseSign</ComboBoxItem>
+            </ComboBox>
+
+            <ComboBox
+                SelectedValue="{Binding FilterOperation, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                SelectedValuePath="Content"
+                Text="Filter"
+                Width="110" Height="40"
+                Margin="0 10 0 0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center">
+                <ComboBoxItem IsSelected="True">Equals</ComboBoxItem>
+                <ComboBoxItem>Greater</ComboBoxItem>
+                <ComboBoxItem>Less</ComboBoxItem>
+                <ComboBoxItem>GreaterEquals</ComboBoxItem>
+                <ComboBoxItem>LessEquals</ComboBoxItem>
+            </ComboBox>
+
+            <TextBox
+                Text="{Binding FilterValue, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                Width="130" Height="40"
+                Margin="0 10 0 0"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center">
+                <services:WatermarkService.Watermark>
+                    <TextBlock Margin="10 0 0 0">Enter Value...</TextBlock>
+                </services:WatermarkService.Watermark>
+            </TextBox>
+
+            <Button
+                Margin="0 10 0 0"
+                Content="Apply Filter"
+                Command="{Binding ApplyFilterCommand}"
+                Width="110" Height="40" />
+        </StackPanel>
     </Grid>
 </UserControl>
